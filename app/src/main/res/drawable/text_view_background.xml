@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--Adding our first item-->
+
+    <item>
+        <!--Here ring shape is created. The important attribute
+        used here is, android:useLevel="false". Attribute
+        with the useLevel=true makes the ring disabled, so it must
+        be false for the ring to appear with color code "#DDD"-->
+        <shape
+            android:shape="oval"
+            android:innerRadius="50dp">
+            <solid android:color="@color/primary_purple" />
+        </shape>
+    </item>
+
+</layer-list>
