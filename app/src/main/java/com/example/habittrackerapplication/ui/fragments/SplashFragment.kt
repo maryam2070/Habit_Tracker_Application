@@ -35,7 +35,6 @@ class SplashFragment : Fragment() {
     var delay = 3000
 
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding=FragmentSplashBinding.inflate(inflater,container,false)
