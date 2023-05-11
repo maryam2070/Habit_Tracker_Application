@@ -1,11 +1,24 @@
 package com.example.habittrackerapplication.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.habittrackerapplication.R
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import com.example.habittrackerapplication.common.Resource
+import com.example.habittrackerapplication.databinding.FragmentSignUpBinding
+import com.example.habittrackerapplication.repositories.FirebaseAuthRepo
+import com.example.habittrackerapplication.repositories.FirebaseRealTimeDatabaseRepo
+import com.example.habittrackerapplication.viewmodels.SignUpFragmentViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,43 +31,116 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class SignUpFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    lateinit var binding:FragmentSignUpBinding
+    val auhtRepo=FirebaseAuthRepo(FirebaseAuth.getInstance())
+    val dbRepo=FirebaseRealTimeDatabaseRepo(FirebaseDatabase.getInstance())
+    val viewModel: SignUpFragmentViewModel by lazy {
+        ViewModelProvider(this, SignUpFragmentViewModel.SignUpFragmentViewModelFactory(auhtRepo,dbRepo)).get(
+            SignUpFragmentViewModel::class.java)
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_up, container, false)
+        binding=FragmentSignUpBinding.inflate(layoutInflater,container,false)
+
+
+        validateEmail("maryamamr2070@gmail.com","1234567")
+
+
+        binding.signUpBtn.setOnClickListener {
+                validateInputData()
+            }
+
+        binding.googleBtn.setOnClickListener {
+
+        }
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SignUpFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SignUpFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun validateInputData()
+    {
+        var flag=true
+
+        if(binding.firstNameTil.editText!!.text.isEmpty()){
+            binding.firstNameTil.setError("required")
+            flag=false
+        }
+        if(binding.secondNameTil.editText!!.text.isEmpty()){
+            binding.secondNameTil.setError("required")
+            flag=false
+        }
+        if(binding.emailTil.editText!!.text.isEmpty()) {
+            binding.emailTil.setError("required")
+            flag=false
+        }
+        if(binding.passwordTil.editText!!.text.isEmpty()) {
+            binding.passwordTil.setError("required")
+            flag = false
+        }
+        if(binding.confirmPasswordTil.editText!!.text.isEmpty()) {
+            binding.confirmPasswordTil.setError("required")
+            flag = false
+        }
+        if(!binding.confirmPasswordTil.editText!!.text.toString().equals(binding.passwordTil.editText!!.text.toString())) {
+            binding.confirmPasswordTil.setError("not matched")
+            flag = false
+        }
+        if(flag) {
+            binding.confirmPasswordTil.setError(null)
+            binding.passwordTil.setError(null)
+            binding.emailTil.setError(null)
+            binding.firstNameTil.setError(null)
+            binding.secondNameTil.setError(null)
+
+            validateEmail(binding.emailTil.editText!!.text.toString(),binding.passwordTil.editText!!.text.toString())
+            //validateEmail()
+        }
+    }
+
+    private fun validateEmail(email: String, pass: String) {
+        viewModel.getAllEmails()
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.emails.collect {
+                when(it) {
+                    is Resource.Error ->
+                        Log.d("SignUpFragment", "error ${it}")
+                    is Resource.Loading ->
+                        Log.d("SignUpFragment", "sss ${it}")
+                    is Resource.Success -> {
+                        if(it.data!!.contains(email))
+                            Toast.makeText(requireContext(), "this Email is already registered", Toast.LENGTH_SHORT).show()
+                        else
+                            registerUser(email,pass)
+                        Log.d("SignUpFragment", "success ${it.data}")
+                    }
                 }
             }
+        }
     }
+
+    private suspend fun registerUser(email: String, pass: String) {
+        viewModel.registerUser(
+            email,
+            pass
+        )
+
+        viewModel.user.collect {
+            when(it) {
+                is Resource.Error ->
+                    Log.d("SignUpFragment", "error ${it}")
+                is Resource.Loading ->
+                    Log.d("SignUpFragment", "sss ${it}")
+                is Resource.Success -> {
+                    /////////
+                    Toast.makeText(requireContext(), "DONE", Toast.LENGTH_SHORT).show()
+                    Log.d("SignUpFragment", "success ${it.data}")
+                }
+            }
+        }
+    }
+
+
 }

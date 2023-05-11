@@ -103,6 +103,7 @@ class SplashFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
+        handler.removeCallbacks(runnable)
     }
 
 }
