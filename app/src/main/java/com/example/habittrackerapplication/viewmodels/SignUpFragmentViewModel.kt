@@ -35,12 +35,13 @@ class SignUpFragmentViewModel(private val authRepo :FirebaseAuthRepo,
             when(it)
             {
                 is Resource.Error ->
-                    Log.d("SignUpFragment", "error ${it}")
+                    Log.d("SignUpFragmentViewModel", "error ${it}")
                 is Resource.Loading ->
-                    Log.d("SignUpFragment", "Loading ${it}")
+                    Log.d("SignUpFragmentViewModel", "Loading ${it}")
                 is Resource.Success ->{
+
+                    Log.d("SignUpFragmentViewModel", "success ${it.data}")
                     insertUserIntoDatabase(it.data!!)
-                    Log.d("SignUpFragment", "success ${it.data}")
                 }
             }
         }
@@ -51,12 +52,12 @@ class SignUpFragmentViewModel(private val authRepo :FirebaseAuthRepo,
             when(it)
             {
                 is Resource.Error ->
-                    Log.d("SignUpFragment", "error ${it}")
+                    Log.d("SignUpFragmentViewModel", "error ${it}")
                 is Resource.Loading ->
-                    Log.d("SignUpFragment", "Loading ${it}")
+                    Log.d("SignUpFragmentViewModel", "Loading ${it}")
                 is Resource.Success ->{
                     _user.value=it
-                    Log.d("SignUpFragment", "success ${it.data}")
+                    Log.d("SignUpFragmentViewModel", "success ${it.data}")
                 }
             }
         }
@@ -69,12 +70,12 @@ class SignUpFragmentViewModel(private val authRepo :FirebaseAuthRepo,
             when(it)
             {
                 is Resource.Error ->
-                    Log.d("SignUpFragment", "error ${it}")
+                    Log.d("SignUpFragmentViewModel", "error ${it}")
                 is Resource.Loading ->
-                    Log.d("SignUpFragment", "Loading ${it}")
+                    Log.d("SignUpFragmentViewModel", "Loading ${it}")
                 is Resource.Success ->{
                     _emails.value=it
-                    Log.d("SignUpFragment", "success ${it.data}")
+                    Log.d("SignUpFragmentViewModel", "success ${it.data}")
                 }
             }
         }

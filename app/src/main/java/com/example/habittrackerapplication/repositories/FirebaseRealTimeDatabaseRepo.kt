@@ -7,6 +7,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -23,9 +24,12 @@ class FirebaseRealTimeDatabaseRepo(val db:FirebaseDatabase) {
         val ref=db.reference.child("emails")
         val lis=ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                snapshot.children.forEach {
-                    emails.add(it.value.toString())
+                if(snapshot.hasChildren()) {
+                    snapshot.children.forEach {
+                        emails.add(it.value.toString())
+                    }
                 }
+
                 trySend(Resource.Success(emails))
 
                 Log.d("FirebaseRealTimeDatabaseRepo", "success ${emails}")
@@ -41,6 +45,7 @@ class FirebaseRealTimeDatabaseRepo(val db:FirebaseDatabase) {
 
     fun registerUser(user:FirebaseUser) :Flow<Resource<FirebaseUser>> = callbackFlow {
         trySend(Resource.Loading())
+        channel.close()
         db.reference
             .child("accounts")
             .child(user.uid)
@@ -52,16 +57,22 @@ class FirebaseRealTimeDatabaseRepo(val db:FirebaseDatabase) {
                         .child("emails")
                         .child(user!!.uid)
                         .setValue(user.email).addOnCompleteListener {
-                            if(it.isSuccessful)
+                            if(it.isSuccessful) {
                                 trySend(Resource.Success(user))
-                            else{
+                                channel.close()
+
+                                Log.d("FirebaseRealTimeDatabaseRepo", "success ")
+                            }else{
                                 trySend(Resource.Error(it.exception!!.message!!))
+                                channel.close()
                             }
                         }
                 }else{
                     trySend(Resource.Error(it.exception!!.message!!))
+                    channel.close()
                 }
             }
+        awaitClose { cancel() }
     }
 
 }

@@ -46,9 +46,6 @@ class SignUpFragment : Fragment() {
         binding=FragmentSignUpBinding.inflate(layoutInflater,container,false)
 
 
-        validateEmail("maryamamr2070@gmail.com","1234567")
-
-
         binding.signUpBtn.setOnClickListener {
                 validateInputData()
             }
@@ -110,9 +107,15 @@ class SignUpFragment : Fragment() {
                     is Resource.Loading ->
                         Log.d("SignUpFragment", "sss ${it}")
                     is Resource.Success -> {
-                        if(it.data!!.contains(email))
-                            Toast.makeText(requireContext(), "this Email is already registered", Toast.LENGTH_SHORT).show()
-                        else
+                        if(it.data!!.contains(email)) {
+                            launch(Dispatchers.Main) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "this Email is already registered",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }else
                             registerUser(email,pass)
                         Log.d("SignUpFragment", "success ${it.data}")
                     }
@@ -135,7 +138,9 @@ class SignUpFragment : Fragment() {
                     Log.d("SignUpFragment", "sss ${it}")
                 is Resource.Success -> {
                     /////////
-                    Toast.makeText(requireContext(), "DONE", Toast.LENGTH_SHORT).show()
+                    //launch(Dispatchers.Main) {
+                        Toast.makeText(requireContext(), "DONE", Toast.LENGTH_SHORT).show()
+                    //}
                     Log.d("SignUpFragment", "success ${it.data}")
                 }
             }
