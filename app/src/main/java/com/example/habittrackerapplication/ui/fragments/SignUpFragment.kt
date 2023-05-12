@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -39,19 +40,24 @@ class SignUpFragment : Fragment() {
         ViewModelProvider(this, SignUpFragmentViewModel.SignUpFragmentViewModelFactory(auhtRepo,dbRepo)).get(
             SignUpFragmentViewModel::class.java)
     }
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding=FragmentSignUpBinding.inflate(layoutInflater,container,false)
+        binding = FragmentSignUpBinding.inflate(layoutInflater, container, false)
 
 
+       // GlobalScope.launch {
+        //registerUser("maryamamr2070@gmail.com", "123456")
+        //}
         binding.signUpBtn.setOnClickListener {
-                validateInputData()
-            }
+            validateInputData()
+        }
 
         binding.googleBtn.setOnClickListener {
-
+///
         }
 
         return binding.root
@@ -139,7 +145,7 @@ class SignUpFragment : Fragment() {
                 is Resource.Success -> {
                     /////////
                     //launch(Dispatchers.Main) {
-                        Toast.makeText(requireContext(), "DONE", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "DONE", Toast.LENGTH_SHORT).show()
                     //}
                     Log.d("SignUpFragment", "success ${it.data}")
                 }

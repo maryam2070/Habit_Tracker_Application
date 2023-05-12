@@ -57,7 +57,7 @@ class SignUpFragmentViewModel(private val authRepo :FirebaseAuthRepo,
                     Log.d("SignUpFragmentViewModel", "Loading ${it}")
                 is Resource.Success ->{
                     _user.value=it
-                    Log.d("SignUpFragmentViewModel", "success ${it.data}")
+                    Log.d("SignUpFragmentViewModel", "success user ${it.data}")
                 }
             }
         }

@@ -2,6 +2,8 @@ package com.example.habittrackerapplication.repositories
 
 import android.util.Log
 import com.example.habittrackerapplication.common.Resource
+import com.example.habittrackerapplication.models.Habit
+import com.example.habittrackerapplication.models.habitDtoToHabit
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -75,4 +77,38 @@ class FirebaseRealTimeDatabaseRepo(val db:FirebaseDatabase) {
         awaitClose { cancel() }
     }
 
+    fun addHabit(userId:String,habit: Habit):Flow<Resource<Boolean>> = callbackFlow {
+        val key=db.reference.child("accounts")
+            .child(userId)
+            .child("Habits")
+            .push().getKey().toString()
+
+        habit.id=key
+        db.reference.child("accounts")
+            .child(userId)
+            .child("Habits")
+            .child(key)
+            .setValue(habit)
+    }
+    fun getAllHabits(userId:String):Flow<Resource<ArrayList<Habit>>> = callbackFlow {
+        val data=ArrayList<Habit>()
+        trySend(Resource.Loading())
+        db.reference.child("accounts")
+            .child(userId)
+            .child("Habits").get().addOnCompleteListener {
+                if(it.isSuccessful){
+                    it.result.children.forEach {
+                        Log.d("FirebaseRealTimeDatabaseRepo", "success ${it.value}")
+
+                        var taskObj = it.getValue() as HashMap<*, *>
+                        data.add(habitDtoToHabit(taskObj))
+                    }
+                    trySend(Resource.Success(data))
+                }else{
+                    trySend(Resource.Error(it.exception!!.message!!))
+                }
+            }
+
+        awaitClose()
+    }
 }

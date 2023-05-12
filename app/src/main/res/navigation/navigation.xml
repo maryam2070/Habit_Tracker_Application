@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/splashFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/splashFragment"
@@ -18,4 +18,9 @@
         android:id="@+id/signUpFragment"
         android:name="com.example.habittrackerapplication.ui.fragments.SignUpFragment"
         android:label="SignUpFragment" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.habittrackerapplication.ui.fragments.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
 </navigation>

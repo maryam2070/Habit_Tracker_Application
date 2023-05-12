@@ -24,7 +24,7 @@ class FirebaseAuthRepo(var auth:FirebaseAuth) {
             if (it.isSuccessful) {
                 trySend(Resource.Success(it.result.user!!))
                 channel.close()
-
+                //return@addOnCompleteListener
                 Log.d("FirebaseAuthRepo","Success")
             } else {
                 trySend(Resource.Error(it.exception!!.message!!))
@@ -34,6 +34,9 @@ class FirebaseAuthRepo(var auth:FirebaseAuth) {
             }
         }
         awaitClose{cancel()}
+    }
+    fun getCurUser(): FirebaseUser? {
+        return auth.currentUser
     }
 
 }

@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/tv"
             android:layout_toEndOf="@+id/profile_iv"
-            android:text="Hello Maryam"
+            android:text="Hello"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/profile_iv"
             app:layout_constraintEnd_toEndOf="parent"

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/containr"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="30dp"
+    android:layout_marginEnd="30dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    app:cardCornerRadius="15dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/secondary_purple">
+
+        <ImageView
+            android:id="@+id/icon_iv"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/icon1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/habit_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="10dp"
+            android:text="Readbooks"
+            android:textColor="@color/primary_text"
+            android:textSize="18dp"
+            app:layout_constraintBottom_toTopOf="@+id/habit_days_tv"
+            app:layout_constraintStart_toEndOf="@+id/icon_iv"
+            app:layout_constraintTop_toTopOf="@+id/icon_iv" />
+
+        <TextView
+            android:id="@+id/habit_days_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="2dp"
+            android:text="Readbooks"
+            android:textColor="@color/primary_text"
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/habit_name_tv" />
+
+        <RadioButton
+            android:id="@+id/complete_rb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:width="50dp"
+            android:backgroundTint="@color/secondary_purple"
+            android:buttonTint="@color/primary_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/complete_iv"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/green_mark"
+            app:layout_constraintBottom_toBottomOf="@+id/complete_rb"
+            app:layout_constraintEnd_toEndOf="@+id/complete_rb"
+            app:layout_constraintStart_toStartOf="@+id/complete_rb"
+            app:layout_constraintTop_toTopOf="@+id/complete_rb" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
