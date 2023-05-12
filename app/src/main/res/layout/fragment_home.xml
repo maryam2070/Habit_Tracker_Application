@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.HomeFragment">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/profile_iv"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp"
+            android:src="@drawable/login_background"
+            app:layout_constraintBottom_toTopOf="@+id/textView6"
+            app:layout_constraintEnd_toStartOf="@+id/name_tv"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tv"
+            android:layout_toEndOf="@+id/profile_iv"
+            android:text="Hello Maryam"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_iv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/profile_iv"
+            app:layout_constraintTop_toTopOf="@+id/profile_iv" />
+
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/profile_iv"
+            android:layout_toEndOf="@+id/profile_iv"
+            android:text="have a nice day"
+            android:textSize="19dp"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_iv"
+            app:layout_constraintEnd_toEndOf="@+id/name_tv"
+
+            app:layout_constraintStart_toStartOf="@+id/name_tv"
+            app:layout_constraintTop_toBottomOf="@+id/name_tv" />
+
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Today's Progress"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/circular_pb"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_iv" />
+
+
+        <ProgressBar
+            android:id="@+id/circular_pb"
+            style="@style/CircularDeterminateProgressBar"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+
+            android:indeterminate="false"
+            android:indeterminateOnly="false"
+            android:progress="10"
+            android:progressDrawable="@drawable/circle"
+            android:rotation="0"
+            app:layout_constraintBottom_toTopOf="@+id/textView5"
+            app:layout_constraintEnd_toStartOf="@+id/progress_tv"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6"
+            tools:progress="0" />
+
+        <TextView
+            android:id="@+id/progress_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="38dp"
+            android:layout_toEndOf="@+id/circular_pb"
+            android:textSize="15dp"
+            app:layout_constraintBottom_toBottomOf="@+id/circular_pb"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/circular_pb"
+            app:layout_constraintTop_toTopOf="@+id/circular_pb" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="Today's Habits"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/habits_rv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/circular_pb" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/habits_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/circular_pb"
+            android:layout_marginTop="10dp"
+            android:nestedScrollingEnabled="false"
+            app:fastScrollEnabled="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
