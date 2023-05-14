@@ -23,7 +23,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class HabitAdapter(val context: Context ,val list:ArrayList<Habit>):
+class HabitAdapter(val context: Context ,val list:ArrayList<Habit>,val isRadioBtnEnabled:Boolean=true):
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private class ViewHolder(view: View): RecyclerView.ViewHolder(view) {}
@@ -47,13 +47,17 @@ class HabitAdapter(val context: Context ,val list:ArrayList<Habit>):
                 .into(holder.itemView.findViewById(R.id.icon_iv))*/
 
             //holder.itemView.findViewById<RadioButton>(R.id.complete_rb).isEnabled=isEnabled
-            if(model.isChecked)
-            {
-                binding.completeRb.visibility=View.INVISIBLE
-                binding.completeIv.visibility=View.VISIBLE
+            if(isRadioBtnEnabled) {
+                if (model.isChecked) {
+                    binding.completeRb.visibility = View.INVISIBLE
+                    binding.completeIv.visibility = View.VISIBLE
+                } else {
+                    binding.completeRb.visibility = View.VISIBLE
+                    binding.completeIv.visibility = View.INVISIBLE
+                }
             }else{
-                binding.completeRb.visibility=View.VISIBLE
-                binding.completeIv.visibility=View.INVISIBLE
+                binding.completeRb.visibility = View.INVISIBLE
+                binding.completeIv.visibility = View.INVISIBLE
             }
             holder.itemView.findViewById<RadioButton>(R.id.complete_rb).setOnCheckedChangeListener { compoundButton, b ->
                /* if(model.isChecked==(false) && isEnabled==true){
