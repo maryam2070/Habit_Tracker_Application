@@ -121,4 +121,21 @@ class FirebaseRealTimeDatabaseRepo(val db:FirebaseDatabase) {
 
         awaitClose()
     }
+
+    fun getTimeOfRegistration(userId:String):Flow<Resource<String>> = callbackFlow {
+        trySend(Resource.Loading())
+        db.reference.child("accounts")
+            .child(userId)
+            .child("time_of_registration").get().addOnCompleteListener {
+                if(it.isSuccessful){
+                        Log.d("FirebaseRealTimeDatabaseRepo", "success ${it.result.value}")
+                    trySend(Resource.Success(it.result.value.toString()))
+                }else{
+                    Log.d("FirebaseRealTimeDatabaseRepo", "Faild")
+                    trySend(Resource.Error(it.exception!!.message!!))
+                }
+            }
+
+        awaitClose()
+    }
 }

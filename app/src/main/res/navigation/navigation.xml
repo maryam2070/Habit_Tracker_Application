@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/addNewHabitFragment">
+    app:startDestination="@id/calenderHistoryFragment">
 
     <fragment
         android:id="@+id/splashFragment"
@@ -33,4 +33,9 @@
         android:name="com.example.habittrackerapplication.ui.fragments.AddNewHabitFragment"
         android:label="fragment_add_new_habit"
         tools:layout="@layout/fragment_add_new_habit" />
+    <fragment
+        android:id="@+id/calenderHistoryFragment"
+        android:name="com.example.habittrackerapplication.ui.fragments.CalenderHistoryFragment"
+        android:label="fragment_calender_history"
+        tools:layout="@layout/fragment_calender_history" />
 </navigation>

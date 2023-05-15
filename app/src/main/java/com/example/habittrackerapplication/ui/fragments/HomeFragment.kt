@@ -25,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import java.time.DayOfWeek
+import java.util.*
+import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -83,15 +85,15 @@ class HomeFragment : Fragment() {
         CoroutineScope(Dispatchers.Main).launch {
             var completed = 0
             val todayList=ArrayList<Habit>()
-            val curDay = getFormattedDate()
+            val curDay = getFormattedDate(Calendar.getInstance())
             for (i in 0 until list.size) {
                 if (list.get(i).completedDays.contains(curDay)) {
                     list.get(i).isChecked = true
                     completed = completed + 1
                 }
 
-                if(list.get(i).dayOfMonth!!.equals(getNumberOfDayInMonth())||list.get(i).dayOfWeek.equals(getDayName())||list.get(i).listOfDays.contains(
-                        getDayName()
+                if(list.get(i).dayOfMonth!!.equals(getNumberOfDayInMonth(Calendar.getInstance()))||list.get(i).dayOfWeek.equals(getDayName(Calendar.getInstance()))||list.get(i).listOfDays.contains(
+                        getDayName(Calendar.getInstance())
                     ))
                     todayList.add(list.get(i))
             }
