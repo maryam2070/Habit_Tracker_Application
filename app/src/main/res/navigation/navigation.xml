@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/habitListFragment">
+    app:startDestination="@id/addNewHabitFragment">
 
     <fragment
         android:id="@+id/splashFragment"
@@ -28,4 +28,9 @@
         android:name="com.example.habittrackerapplication.ui.fragments.HabitListFragment"
         android:label="fragment_habit_list"
         tools:layout="@layout/fragment_habit_list" />
+    <fragment
+        android:id="@+id/addNewHabitFragment"
+        android:name="com.example.habittrackerapplication.ui.fragments.AddNewHabitFragment"
+        android:label="fragment_add_new_habit"
+        tools:layout="@layout/fragment_add_new_habit" />
 </navigation>

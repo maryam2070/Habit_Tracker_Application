@@ -1,0 +1,48 @@
+package com.example.habittrackerapplication.common
+
+import com.example.habittrackerapplication.R
+
+fun getIconArray():ArrayList<Int>
+{
+    val list=ArrayList<Int>()
+    list.add(R.drawable.icon1)
+    list.add(R.drawable.icon2)
+    list.add(R.drawable.icon4)
+    list.add(R.drawable.icon5)
+    list.add(R.drawable.icon6)
+    list.add(R.drawable.icon7)
+    list.add(R.drawable.icon8)
+    list.add(R.drawable.icon9)
+    list.add(R.drawable.icon10)
+    list.add(R.drawable.icon11)
+    list.add(R.drawable.icon12)
+    list.add(R.drawable.icon13)
+    list.add(R.drawable.icon14)
+    list.add(R.drawable.icon15)
+    list.add(R.drawable.icon16)
+    list.add(R.drawable.icon17)
+    list.add(R.drawable.icon18)
+    list.add(R.drawable.icon19)
+    list.add(R.drawable.icon20)
+    list.add(R.drawable.icon21)
+    list.add(R.drawable.icon22)
+    list.add(R.drawable.icon23)
+    list.add(R.drawable.icon24)
+    list.add(R.drawable.icon25)
+    list.add(R.drawable.icon26)
+    list.add(R.drawable.icon27)
+    list.add(R.drawable.icon28)
+    list.add(R.drawable.icon29)
+    list.add(R.drawable.icon30)
+    list.add(R.drawable.icon31)
+    list.add(R.drawable.icon32)
+    list.add(R.drawable.icon33)
+    list.add(R.drawable.icon34)
+    list.add(R.drawable.icon35)
+    list.add(R.drawable.icon36)
+    list.add(R.drawable.icon37)
+    list.add(R.drawable.icon39)
+    list.add(R.drawable.icon40)
+    list.add(R.drawable.icon41)
+    return list
+}

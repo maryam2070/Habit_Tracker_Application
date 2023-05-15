@@ -78,6 +78,8 @@ class FirebaseRealTimeDatabaseRepo(val db:FirebaseDatabase) {
     }
 
     fun addHabit(userId:String,habit: Habit):Flow<Resource<Boolean>> = callbackFlow {
+
+        trySend(Resource.Loading())
         val key=db.reference.child("accounts")
             .child(userId)
             .child("Habits")
@@ -88,7 +90,15 @@ class FirebaseRealTimeDatabaseRepo(val db:FirebaseDatabase) {
             .child(userId)
             .child("Habits")
             .child(key)
-            .setValue(habit)
+            .setValue(habit).addOnSuccessListener {
+
+                trySend(Resource.Success(true))
+            }
+            .addOnFailureListener {
+                trySend(Resource.Error(it.message.toString()))
+            }
+
+        awaitClose()
     }
     fun getAllHabits(userId:String):Flow<Resource<ArrayList<Habit>>> = callbackFlow {
         val data=ArrayList<Habit>()

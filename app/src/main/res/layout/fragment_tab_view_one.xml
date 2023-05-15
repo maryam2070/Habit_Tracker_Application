@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:orientation="horizontal"
+    tools:context=".ui.fragments.TabViewOneFragment">
+
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Select exception"
+        android:textColor="@color/primary_text"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/saturday_tv"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_margin="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:text="S"
+        android:textColor="@color/primary_text"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/sunday_tv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/sunday_tv"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="S"
+        android:textColor="@color/primary_text"
+        android:textSize="15dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/saturday_tv"
+        app:layout_constraintEnd_toStartOf="@+id/monday_tv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/saturday_tv" />
+
+    <TextView
+        android:id="@+id/monday_tv"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="M"
+        android:textColor="@color/primary_text"
+        android:textSize="15dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/saturday_tv"
+        app:layout_constraintEnd_toStartOf="@+id/tuesday_tv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/sunday_tv" />
+
+    <TextView
+        android:id="@+id/tuesday_tv"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="T"
+        android:textColor="@color/primary_text"
+        android:textSize="15dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/saturday_tv"
+        app:layout_constraintEnd_toStartOf="@+id/wednesday_tv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/monday_tv" />
+
+    <TextView
+        android:id="@+id/wednesday_tv"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="W"
+        android:textColor="@color/primary_text"
+        android:textSize="15dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/saturday_tv"
+        app:layout_constraintEnd_toStartOf="@+id/thursday_tv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tuesday_tv" />
+
+    <TextView
+        android:id="@+id/thursday_tv"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="T"
+        android:textColor="@color/primary_text"
+        android:textSize="15dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/saturday_tv"
+        app:layout_constraintEnd_toStartOf="@+id/friday_tv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/wednesday_tv" />
+
+    <TextView
+        android:id="@+id/friday_tv"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="F"
+        android:textColor="@color/primary_text"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/saturday_tv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/thursday_tv"
+        tools:layout_editor_absoluteY="139dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
