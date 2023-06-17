@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <ImageView
             android:id="@+id/profile_iv"
             android:layout_width="@dimen/_80sdp"
@@ -19,7 +20,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="50dp"
             android:layout_marginBottom="50dp"
-            android:src="@drawable/login_background"
+            android:src="@drawable/user_avatar"
             app:layout_constraintBottom_toTopOf="@+id/textView6"
             app:layout_constraintEnd_toStartOf="@+id/name_tv"
             app:layout_constraintHorizontal_bias="0.5"

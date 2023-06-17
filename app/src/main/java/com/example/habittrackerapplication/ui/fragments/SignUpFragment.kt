@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.habittrackerapplication.R
 import com.example.habittrackerapplication.common.CLINT_SERVER_ID
 import com.example.habittrackerapplication.common.Resource
 import com.example.habittrackerapplication.databinding.FragmentSignUpBinding
@@ -82,6 +84,7 @@ class SignUpFragment : Fragment() {
                     is Resource.Success -> {
                         launch(Dispatchers.Main) {
                             Toast.makeText(requireContext(), "DONE", Toast.LENGTH_SHORT).show()
+                            findNavController().navigate(R.id.action_signUpFragment_to_homeFragment2)
                         }
                         Log.d("SignUpFragment", "success ${it.data}")
                     }

@@ -42,7 +42,7 @@ class SplashFragment : Fragment() {
 
         binding.signUpBtn.setOnClickListener {
            // startActivity(Intent(this, SignUpActivity::class.java))
-            findNavController().navigate(R.id.action_splashFragment_to_signUpFragment)
+           // findNavController().navigate(R.id.action_splashFragment_to_signUpFragment)
         }
 
 

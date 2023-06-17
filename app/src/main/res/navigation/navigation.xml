@@ -3,39 +3,77 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/calenderHistoryFragment">
+    app:startDestination="@id/welcome_navigation">
 
     <fragment
-        android:id="@+id/splashFragment"
-        android:name="com.example.habittrackerapplication.ui.fragments.SplashFragment"
-        android:label="fragment_splash"
-        tools:layout="@layout/fragment_splash" >
-        <action
-            android:id="@+id/action_splashFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
-    </fragment>
+        android:id="@+id/editEmailFragment"
+        android:name="com.example.habittrackerapplication.ui.fragments.EditEmailFragment"
+        android:label="fragment_edit_email"
+        tools:layout="@layout/fragment_edit_email" />
     <fragment
-        android:id="@+id/signUpFragment"
-        android:name="com.example.habittrackerapplication.ui.fragments.SignUpFragment"
-        android:label="SignUpFragment" />
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.habittrackerapplication.ui.fragments.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
-    <fragment
-        android:id="@+id/habitListFragment"
-        android:name="com.example.habittrackerapplication.ui.fragments.HabitListFragment"
-        android:label="fragment_habit_list"
-        tools:layout="@layout/fragment_habit_list" />
-    <fragment
-        android:id="@+id/addNewHabitFragment"
-        android:name="com.example.habittrackerapplication.ui.fragments.AddNewHabitFragment"
-        android:label="fragment_add_new_habit"
-        tools:layout="@layout/fragment_add_new_habit" />
-    <fragment
-        android:id="@+id/calenderHistoryFragment"
-        android:name="com.example.habittrackerapplication.ui.fragments.CalenderHistoryFragment"
-        android:label="fragment_calender_history"
-        tools:layout="@layout/fragment_calender_history" />
+        android:id="@+id/editPasswordFragment"
+        android:name="com.example.habittrackerapplication.ui.fragments.EditPasswordFragment"
+        android:label="fragment_edit_password"
+        tools:layout="@layout/fragment_edit_password" />
+    <navigation android:id="@+id/welcome_navigation"
+        app:startDestination="@id/signUpFragment">
+        <fragment
+            android:id="@+id/signUpFragment"
+            android:name="com.example.habittrackerapplication.ui.fragments.SignUpFragment"
+            android:label="SignUpFragment">
+            <action
+                android:id="@+id/action_signUpFragment_to_homeFragment2"
+                app:destination="@id/core_navigation" />
+        </fragment>
+        <fragment
+            android:id="@+id/loginFragment"
+            android:name="com.example.habittrackerapplication.ui.fragments.LoginFragment"
+            android:label="fragment_login"
+            tools:layout="@layout/fragment_login">
+            <action
+                android:id="@+id/action_loginFragment_to_signUpFragment"
+                app:destination="@id/signUpFragment" />
+            <action
+                android:id="@+id/action_loginFragment_to_homeFragment"
+                app:destination="@id/core_navigation" />
+        </fragment>
+        <fragment
+            android:id="@+id/splashFragment"
+            android:name="com.example.habittrackerapplication.ui.fragments.SplashFragment"
+            android:label="fragment_splash"
+            tools:layout="@layout/fragment_splash">
+            <action
+                android:id="@+id/action_splashFragment_to_loginFragment"
+                app:destination="@id/loginFragment" />
+        </fragment>
+    </navigation>
+    <navigation android:id="@+id/core_navigation"
+        app:startDestination="@id/homeFragment">
+        <fragment
+            android:id="@+id/habitListFragment"
+            android:name="com.example.habittrackerapplication.ui.fragments.HabitListFragment"
+            android:label="fragment_habit_list"
+            tools:layout="@layout/fragment_habit_list">
+            <action
+                android:id="@+id/action_habitListFragment_to_addNewHabitFragment"
+                app:destination="@id/addNewHabitFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/addNewHabitFragment"
+            android:name="com.example.habittrackerapplication.ui.fragments.AddNewHabitFragment"
+            android:label="fragment_add_new_habit"
+            tools:layout="@layout/fragment_add_new_habit" />
+        <fragment
+            android:id="@+id/homeFragment"
+            android:name="com.example.habittrackerapplication.ui.fragments.HomeFragment"
+            android:label="fragment_home"
+            tools:layout="@layout/fragment_home" />
+        <fragment
+            android:id="@+id/calenderHistoryFragment"
+            android:name="com.example.habittrackerapplication.ui.fragments.CalenderHistoryFragment"
+            android:label="fragment_calender_history"
+            tools:layout="@layout/fragment_calender_history" />
+    </navigation>
+
+
 </navigation>

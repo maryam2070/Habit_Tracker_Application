@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Home"  />
+    <item
+        android:id="@+id/habitListFragment"
+        android:icon="@drawable/ic_baseline_view_list_24"
+        android:title="Habits List" />
+    <item
+        android:id="@+id/calenderHistoryFragment"
+        android:icon="@drawable/ic_baseline_calendar_today_24"
+        android:title="Calendar History" />
+</menu>
