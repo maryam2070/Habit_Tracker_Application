@@ -47,3 +47,12 @@
 			</ul>
 		</li>
 	</ul>
+<h2>Screenshots</h2>
+
+
+![1](https://github.com/maryam2070/Habit_Tracker_Application/assets/75796502/e9ed9976-1fe8-4480-8bd8-663b8fe942e6)
+![1 - Copy - Copy (2)](https://github.com/maryam2070/Habit_Tracker_Application/assets/75796502/1d10dea5-e5b8-4100-8e51-a3f4cd7dd067)
+![1 - Copy](https://github.com/maryam2070/Habit_Tracker_Application/assets/75796502/eafa55e2-738e-44c7-90f3-0dd5a8cf02f8)
+![1 - Copy - Copy](https://github.com/maryam2070/Habit_Tracker_Application/assets/75796502/1389cc36-5a99-4e4a-a039-1134ae063db8)
+
+
