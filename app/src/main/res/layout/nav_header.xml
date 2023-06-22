@@ -12,12 +12,12 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/profile_iv"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_50sdp"
         android:src="@drawable/user_avatar"
-        app:layout_constraintBottom_toTopOf="@+id/textView12"
-        app:layout_constraintStart_toStartOf="@+id/textView12"
+        app:layout_constraintBottom_toTopOf="@+id/name_tv"
+        app:layout_constraintStart_toStartOf="@+id/name_tv"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -25,27 +25,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_edit_24"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_iv"
+        app:layout_constraintEnd_toEndOf="@+id/profile_iv"
         app:tint="@color/black" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Android Knowledge"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/textView13"
-        app:layout_constraintStart_toStartOf="@+id/textView13"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintBottom_toTopOf="@+id/email_tv"
+        app:layout_constraintStart_toStartOf="@+id/email_tv"
+        app:layout_constraintTop_toBottomOf="@+id/profile_iv" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/email_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="contact@androidknowledge.com"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+        app:layout_constraintTop_toBottomOf="@+id/name_tv" />
 </androidx.constraintlayout.widget.ConstraintLayout>

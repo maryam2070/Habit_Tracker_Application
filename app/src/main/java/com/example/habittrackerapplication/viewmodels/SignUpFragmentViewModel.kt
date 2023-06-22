@@ -42,14 +42,14 @@ class SignUpFragmentViewModel(private val authRepo :FirebaseAuthRepo,
                 is Resource.Loading ->
                     Log.d("LoginFragmentViewModel", "Loading ${it}")
                 is Resource.Success ->{
-                    _user.value=it
+                    insertUserIntoDatabase(it.data!!)
                     Log.d("LoginFragmentViewModel", "success ${it.data}")
                 }
             }
         }
     }
-    fun registerUser(email: String, pass: String) = viewModelScope.launch {
-        authRepo.registerUserByEmailAndPass(email,pass) .collect{
+    fun registerUser(email: String, pass: String,name:String) = viewModelScope.launch {
+        authRepo.registerUserByEmailAndPass(email,pass,name) .collect{
             when(it)
             {
                 is Resource.Error ->
@@ -83,7 +83,6 @@ class SignUpFragmentViewModel(private val authRepo :FirebaseAuthRepo,
     }
 
     fun getAllEmails() = viewModelScope.launch {
-
         databaseRepo.getAllEmails().collect{
             when(it)
             {

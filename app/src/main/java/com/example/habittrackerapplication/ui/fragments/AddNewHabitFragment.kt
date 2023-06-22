@@ -60,7 +60,9 @@ class AddNewHabitFragment : Fragment() {
     ): View? {
         binding= FragmentAddNewHabitBinding.inflate(layoutInflater,container,false)
 
+        Toast.makeText(requireContext(),requireArguments().get("userId").toString(),Toast.LENGTH_SHORT).show()
         init()
+
         binding.saveBtn.setOnClickListener {
             if (binding.nameTil.editText!!.text.isEmpty())
                 Toast.makeText(requireContext(), "Please Enter Data", Toast.LENGTH_SHORT).show()
@@ -73,9 +75,9 @@ class AddNewHabitFragment : Fragment() {
             viewModel.finished.collect {
                 when (it) {
                     is Resource.Error ->
-                        Log.d("HomeFragment", "error ${it}")
+                        Log.d("AddNewHabitFragment", "error ${it}")
                     is Resource.Loading ->
-                        Log.d("HomeFragment", "Loading ${it}")
+                        Log.d("AddNewHabitFragment", "Loading ${it}")
                     is Resource.Success -> {
                         CoroutineScope(Dispatchers.Main).launch {
                             Toast.makeText(
@@ -84,7 +86,7 @@ class AddNewHabitFragment : Fragment() {
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-                            Log.d("HomeFragment", "success ${it.data}")
+                            Log.d("AddNewHabitFragment", "success ${it.data}")
                     }
                 }
             }
@@ -94,12 +96,10 @@ class AddNewHabitFragment : Fragment() {
 
    private fun handleHabitType() {
         var list = ArrayList<String>()
-       var id=FirebaseAuth.getInstance().currentUser!!.uid
-       id="EsH7YeqlzKTAnFjOjYGK6AUlTuG2"
+       val id=FirebaseAuthRepo(FirebaseAuth.getInstance()).getCurUser()!!.uid
         if (binding.tabLayout.selectedTabPosition.equals(0)) {
             viewModel.insertHabit(id,Habit("",binding.nameTil.editText!!.text.toString(),0,list,iconAdapter.getSelectedItem(),false,"",f1.getSelectedDays(),0,"daily_habits"))
         }else if(binding.tabLayout.selectedTabPosition.equals(1)){
-            println("AAAAAAAA   "+f2.requireArguments().getString("day"))
             viewModel.insertHabit(id,Habit("",binding.nameTil.editText!!.text.toString(),0,list,iconAdapter.getSelectedItem(),false,f2.requireArguments().getString("day"),list,0,"weekly_habits"))
         }else{
             viewModel.insertHabit(id,Habit("",binding.nameTil.editText!!.text.toString(),0,list,iconAdapter.getSelectedItem(),false,"",list,f3.requireArguments().getInt("day"),"monthly_habits"))

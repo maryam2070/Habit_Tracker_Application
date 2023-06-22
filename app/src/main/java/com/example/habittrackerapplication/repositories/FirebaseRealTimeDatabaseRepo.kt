@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.habittrackerapplication.common.Resource
 import com.example.habittrackerapplication.models.Habit
 import com.example.habittrackerapplication.models.habitDtoToHabit
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -53,22 +54,14 @@ class FirebaseRealTimeDatabaseRepo(val db:FirebaseDatabase) {
             .child(user.uid)
             .child("profile_details")
             .child("time_of_registration")
-            .setValue(Calendar.getInstance().timeInMillis).addOnCompleteListener {
+            .setValue(Calendar.getInstance().timeInMillis)
+        db.reference
+            .child("emails")
+            .child(user!!.uid)
+            .setValue(user.email.toString())
+            .addOnCompleteListener {
                 if(it.isSuccessful){
-                    db.reference
-                        .child("emails")
-                        .child(user!!.uid)
-                        .setValue(user.email).addOnCompleteListener {
-                            if(it.isSuccessful) {
-                                trySend(Resource.Success(user))
-                                channel.close()
-
-                                Log.d("FirebaseRealTimeDatabaseRepo", "success ")
-                            }else{
-                                trySend(Resource.Error(it.exception!!.message!!))
-                                channel.close()
-                            }
-                        }
+                    trySend(Resource.Success(user))
                 }else{
                     trySend(Resource.Error(it.exception!!.message!!))
                     channel.close()
@@ -76,6 +69,8 @@ class FirebaseRealTimeDatabaseRepo(val db:FirebaseDatabase) {
             }
         awaitClose { cancel() }
     }
+
+
 
     fun addHabit(userId:String,habit: Habit):Flow<Resource<Boolean>> = callbackFlow {
 
@@ -126,6 +121,7 @@ class FirebaseRealTimeDatabaseRepo(val db:FirebaseDatabase) {
         trySend(Resource.Loading())
         db.reference.child("accounts")
             .child(userId)
+            .child("profile_details")
             .child("time_of_registration").get().addOnCompleteListener {
                 if(it.isSuccessful){
                         Log.d("FirebaseRealTimeDatabaseRepo", "success ${it.result.value}")
@@ -138,4 +134,40 @@ class FirebaseRealTimeDatabaseRepo(val db:FirebaseDatabase) {
 
         awaitClose()
     }
+
+    fun deleteHabit(userId:String,habit: Habit):Flow<Resource<Boolean>> = callbackFlow {
+        trySend(Resource.Loading())
+        db.reference.child("accounts")
+            .child(userId)
+            .child("Habits")
+            .child(habit.id!!).removeValue()
+            .addOnSuccessListener {
+
+                trySend(Resource.Success(true))
+            }
+            .addOnFailureListener {
+                trySend(Resource.Error(it.message.toString()))
+            }
+        awaitClose()
+    }
+    fun updateHabitCompletedDays(userId:String,habit: Habit,day:String):Flow<Resource<Boolean>> = callbackFlow {
+        trySend(Resource.Loading())
+
+        habit.completedDays.add(day)
+        FirebaseDatabase.getInstance().reference.child("accounts")
+            .child((FirebaseAuth.getInstance().currentUser)?.uid!!)
+            .child("Habits").child(habit.id!!).child("completedDays")
+            .setValue(habit.completedDays)
+
+        FirebaseDatabase.getInstance().reference.child("accounts")
+            .child((FirebaseAuth.getInstance().currentUser)?.uid!!)
+            .child("Habits").child(habit.id!!).child("days").setValue(habit.days!!+1).addOnSuccessListener {
+
+                trySend(Resource.Success(true))
+            }.addOnFailureListener {
+                trySend(Resource.Error(it.message.toString()))
+            }
+        awaitClose()
+    }
+
 }

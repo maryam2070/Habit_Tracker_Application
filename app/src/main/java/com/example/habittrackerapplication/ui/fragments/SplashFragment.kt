@@ -12,7 +12,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.example.habittrackerapplication.R
 import com.example.habittrackerapplication.databinding.FragmentSplashBinding
+import com.example.habittrackerapplication.repositories.FirebaseAuthRepo
 import com.example.habittraker.adapters.ViewPagerAdapter
+import com.google.firebase.auth.FirebaseAuth
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,20 +36,25 @@ class SplashFragment : Fragment() {
     lateinit var adapter: ViewPagerAdapter
     var delay = 3000
 
+    val repo=FirebaseAuthRepo(FirebaseAuth.getInstance())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding=FragmentSplashBinding.inflate(inflater,container,false)
 
 
+        val user=repo.getCurUser()
+        if(user!=null){
+           // findNavController().popBackStack()
+            //findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToCoreNav())
+        }
         binding.signUpBtn.setOnClickListener {
-           // startActivity(Intent(this, SignUpActivity::class.java))
-           // findNavController().navigate(R.id.action_splashFragment_to_signUpFragment)
+            findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToSignUpFragment())
         }
 
 
         binding.emailTv.setOnClickListener {
-           // startActivity(Intent(this, LoginActivity::class.java))
+            findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
         }
         adapter= ViewPagerAdapter(list,requireContext())
         binding.welcomePager.adapter=adapter

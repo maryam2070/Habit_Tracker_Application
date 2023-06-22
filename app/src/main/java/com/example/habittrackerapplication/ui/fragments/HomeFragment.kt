@@ -1,13 +1,20 @@
 package com.example.habittrackerapplication.ui.fragments
 
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavDestination
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.habittrackerapplication.R
 import com.example.habittrackerapplication.common.Resource
 import com.example.habittrackerapplication.common.getDayName
@@ -19,12 +26,9 @@ import com.example.habittrackerapplication.repositories.FirebaseAuthRepo
 import com.example.habittrackerapplication.repositories.FirebaseRealTimeDatabaseRepo
 import com.example.habittrackerapplication.ui.adapters.HabitAdapter
 import com.example.habittrackerapplication.viewmodels.HomeFragmentViewModel
-import com.example.habittrackerapplication.viewmodels.SignUpFragmentViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
-import java.time.DayOfWeek
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -38,7 +42,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [HomeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment() ,HabitAdapter.ItemClickListener{
 
     lateinit var binding:FragmentHomeBinding
 
@@ -49,6 +53,7 @@ class HomeFragment : Fragment() {
         ViewModelProvider(this, HomeFragmentViewModel.HomeFragmentViewModelFactory(dbRepo)).get(
             HomeFragmentViewModel::class.java)
     }
+    val todayList=ArrayList<Habit>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,9 +62,8 @@ class HomeFragment : Fragment() {
         binding=FragmentHomeBinding.inflate(inflater,container,false)
 
 
-        //viewModel.getAllHabits(auhtRepo.getCurUser()!!.uid)
-
-        viewModel.getAllHabits("EsH7YeqlzKTAnFjOjYGK6AUlTuG2")
+        val userId= FirebaseAuthRepo(FirebaseAuth.getInstance()).getCurUser()!!.uid
+        viewModel.getAllHabits(userId)
 
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.habits.collect {
@@ -84,7 +88,7 @@ class HomeFragment : Fragment() {
     private fun updateUi(list: ArrayList<Habit>) {
         CoroutineScope(Dispatchers.Main).launch {
             var completed = 0
-            val todayList=ArrayList<Habit>()
+
             val curDay = getFormattedDate(Calendar.getInstance())
             for (i in 0 until list.size) {
                 if (list.get(i).completedDays.contains(curDay)) {
@@ -105,17 +109,51 @@ class HomeFragment : Fragment() {
                 binding.progressTv.text =
                     "${(completed * 100 / list.size * 100) / 100}% from your\n today habits done"
             }
-            binding.habitsRv.adapter = HabitAdapter(requireContext(), todayList)
+            binding.habitsRv.adapter = HabitAdapter(requireContext(), todayList, itemClickListener = this@HomeFragment)
             binding.habitsRv.layoutManager = LinearLayoutManager(context)
 
+
             binding.nameTv.text = "Hello " + auhtRepo.getCurUser()!!.displayName
+            Glide.with(requireContext())
+                .load(auhtRepo.getCurUser()!!.photoUrl)
+                .placeholder(R.drawable.user_avatar)
+                //.centerCrop()
+                .circleCrop()
+                .into(binding.profileIv)
         }
     }
 
-    private fun getCompletedHabitsCount(): Int {
-        val cnt=0
-        return cnt
+    override fun onItemClick(position: Int) {
+        //
+    }
+
+    override fun onRadioButtonClick(position: Int) {
+        viewModel.updateHabitCompletedDays(FirebaseAuthRepo(FirebaseAuth.getInstance()).getCurUser()!!.uid,
+        todayList.get(position),
+        getFormattedDate(Calendar.getInstance())
+        )
+
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.updated.collect {
+                when (it) {
+                    is Resource.Error ->
+                        Log.d("HomeFragment", "error ${it}")
+                    is Resource.Loading ->
+                        Log.d("HomeFragment", "Loading ${it}")
+                    is Resource.Success -> {
+                        var d: Dialog = Dialog(requireContext())
+                        d.setContentView(R.layout.check_habit_dialog)
+                        d.show()
+                        Log.d("HomeFragment", "success ${it.data}")
+
+                    }
+                }
+            }
+        }
 
     }
+
+
+
 
 }

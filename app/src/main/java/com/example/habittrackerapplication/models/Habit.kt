@@ -1,10 +1,13 @@
 package com.example.habittrackerapplication.models
 
-import java.util.ArrayList
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import java.util.Calendar
 import java.util.HashMap
+import kotlin.collections.ArrayList
 
-//@Parcelize
+
+@Parcelize
 data class Habit(
     var id: String?="",
     var name:String?="",
@@ -16,7 +19,7 @@ data class Habit(
     var listOfDays: ArrayList<String> = ArrayList<String>(),
     var dayOfMonth:Int?=1,
     var type:String="daily_habit",
-    var timeOfAdding:Long=Calendar.getInstance().timeInMillis)
+    var timeOfAdding:Long=Calendar.getInstance().timeInMillis): Parcelable
 
 data class HabitDTO(
     var id: String?="",
@@ -33,7 +36,10 @@ data class HabitDTO(
 fun habitDtoToHabit(taskObj: HashMap<*, *>): Habit {
     var habit=Habit()
     habit.id = taskObj ["id"].toString()
-    habit.completedDays = taskObj ["completedDays"] as java.util.ArrayList<String>
+    var list=ArrayList<String>()
+    if(taskObj ["completedDays"] !=null)
+        list =(taskObj ["completedDays"] as java.util.ArrayList<String>)
+    habit.completedDays = list
     habit.dayOfMonth = taskObj ["dayOfMonth"].toString().toInt()
     habit.days = taskObj ["days"].toString().toInt()
     habit.iconPosition = taskObj ["iconPosition"].toString().toInt()

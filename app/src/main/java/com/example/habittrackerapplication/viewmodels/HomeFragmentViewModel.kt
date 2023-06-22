@@ -20,6 +20,9 @@ class HomeFragmentViewModel(private val databaseRepo: FirebaseRealTimeDatabaseRe
     val habits: MutableStateFlow<Resource<ArrayList<Habit>>>
         get() = _habits
 
+    private val _updated = MutableStateFlow<Resource<Boolean>>(Resource.Loading())
+    val updated: MutableStateFlow<Resource<Boolean>>
+        get() = _updated
 
     fun getAllHabits(userId:String) = viewModelScope.launch {
         databaseRepo.getAllHabits(userId).collect{
@@ -39,6 +42,22 @@ class HomeFragmentViewModel(private val databaseRepo: FirebaseRealTimeDatabaseRe
     }
 
 
+    fun updateHabitCompletedDays(userId: String,habit: Habit,day:String)= viewModelScope.launch {
+        databaseRepo.updateHabitCompletedDays(userId, habit, day).collect{
+            when(it)
+            {
+                is Resource.Error ->
+                    Log.d("HomeFragmentViewModel", "error ${it}")
+                is Resource.Loading ->
+                    Log.d("HomeFragmentViewModel", "Loading ${it}")
+                is Resource.Success ->{
+                    _updated.value=it
+                    Log.d("HomeFragmentViewModel", "success ${it.data}")
+
+                }
+            }
+        }
+    }
 
     class HomeFragmentViewModelFactory(
         private val databaseRepo: FirebaseRealTimeDatabaseRepo

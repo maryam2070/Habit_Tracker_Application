@@ -3,11 +3,13 @@ package com.example.habittrackerapplication.repositories
 import android.content.Intent
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnCompletionListener
+import android.net.Uri
 import android.preference.PreferenceManager
 import android.util.Log
 import android.widget.Toast
 import com.example.habittrackerapplication.common.DataListener
 import com.example.habittrackerapplication.common.Resource
+import com.example.habittrackerapplication.common.STORAGE_URL
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
@@ -21,14 +23,25 @@ import kotlinx.coroutines.flow.callbackFlow
 
 class FirebaseAuthRepo(var auth:FirebaseAuth) {
 
-    fun registerUserByEmailAndPass(email: String,pass:String):Flow<Resource<FirebaseUser>> = callbackFlow{
+    fun registerUserByEmailAndPass(email: String,pass:String,name:String):Flow<Resource<FirebaseUser>> = callbackFlow{
 
         auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener {
             if (it.isSuccessful) {
-                trySend(Resource.Success(it.result.user!!))
-                channel.close()
-                //return@addOnCompleteListener
-                Log.d("FirebaseAuthRepo","Success")
+            val user=it.result.user
+            val profileUpdates = UserProfileChangeRequest.Builder()
+                    .setDisplayName(name)
+                    .setPhotoUri(user!!.photoUrl)
+                    .build()
+
+                user!!.updateProfile(profileUpdates)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            trySend(Resource.Success(user))
+                            channel.close()
+                            Log.d("FirebaseAuthRepo", "Success")
+                        }
+                    }
+
             } else {
                 trySend(Resource.Error(it.exception!!.message!!))
                 channel.close()
@@ -41,6 +54,7 @@ class FirebaseAuthRepo(var auth:FirebaseAuth) {
     fun getCurUser(): FirebaseUser? {
         return auth.currentUser
     }
+
 
 
     fun editEmail(email: String,pass:String):Flow<Resource<Boolean>> = callbackFlow{
@@ -112,12 +126,38 @@ class FirebaseAuthRepo(var auth:FirebaseAuth) {
 
         FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {task->
             if(task.isSuccessful) {
-                trySend(Resource.Success(task.result.user!!))
+                task.result.user!!.updateEmail(account.email!!.toString()).addOnCompleteListener {
+                    trySend(Resource.Success(task.result.user!!))
+                }
             }else{
                 trySend(Resource.Error(task.exception!!.message!!))
             }
         }
 
+        awaitClose{cancel()}
+    }
+
+
+    fun logout(){
+        auth.signOut()
+    }
+    fun uploadImage(uri: Uri): Flow<Resource<Boolean>> = callbackFlow{
+        val user =auth.currentUser
+        val profileUpdates = UserProfileChangeRequest.Builder()
+            .setDisplayName(user!!.displayName)
+            .setPhotoUri(uri)
+            .build()
+
+        user!!.updateProfile(profileUpdates)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    trySend(Resource.Success(true))
+                    channel.close()
+                } else {
+                    trySend(Resource.Error(it.exception!!.message!!))
+                    channel.close()
+                }
+            }
         awaitClose{cancel()}
     }
 }

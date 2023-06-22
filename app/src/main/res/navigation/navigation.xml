@@ -16,14 +16,15 @@
         android:label="fragment_edit_password"
         tools:layout="@layout/fragment_edit_password" />
     <navigation android:id="@+id/welcome_navigation"
-        app:startDestination="@id/signUpFragment">
+        app:startDestination="@id/splashFragment">
         <fragment
             android:id="@+id/signUpFragment"
             android:name="com.example.habittrackerapplication.ui.fragments.SignUpFragment"
             android:label="SignUpFragment">
             <action
-                android:id="@+id/action_signUpFragment_to_homeFragment2"
-                app:destination="@id/core_navigation" />
+                android:id="@+id/action_sign_up_to_core_nav"
+                app:destination="@id/core_navigation"
+                app:popUpTo="@id/core_navigation" />
         </fragment>
         <fragment
             android:id="@+id/loginFragment"
@@ -31,11 +32,9 @@
             android:label="fragment_login"
             tools:layout="@layout/fragment_login">
             <action
-                android:id="@+id/action_loginFragment_to_signUpFragment"
-                app:destination="@id/signUpFragment" />
-            <action
-                android:id="@+id/action_loginFragment_to_homeFragment"
-                app:destination="@id/core_navigation" />
+                android:id="@+id/action_login_to_core_nav"
+                app:destination="@id/core_navigation"
+                app:popUpTo="@id/core_navigation" />
         </fragment>
         <fragment
             android:id="@+id/splashFragment"
@@ -45,35 +44,65 @@
             <action
                 android:id="@+id/action_splashFragment_to_loginFragment"
                 app:destination="@id/loginFragment" />
+            <action
+                android:id="@+id/action_splashFragment_to_signUpFragment"
+                app:destination="@id/signUpFragment" />
+
+            <action
+                android:id="@+id/action_splashFragment_to_core_nav"
+                app:destination="@id/core_navigation"
+                app:popUpTo="@id/core_navigation" />
+
         </fragment>
+
     </navigation>
     <navigation android:id="@+id/core_navigation"
         app:startDestination="@id/homeFragment">
+
         <fragment
             android:id="@+id/habitListFragment"
             android:name="com.example.habittrackerapplication.ui.fragments.HabitListFragment"
             android:label="fragment_habit_list"
             tools:layout="@layout/fragment_habit_list">
             <action
+                android:id="@+id/action_habitListFragment_to_habitDetailsFragment"
+                app:destination="@id/habitDetailsFragment" >
+            </action>
+            <action
                 android:id="@+id/action_habitListFragment_to_addNewHabitFragment"
-                app:destination="@id/addNewHabitFragment" />
+                app:destination="@id/addNewHabitFragment" >
+            </action>
         </fragment>
         <fragment
             android:id="@+id/addNewHabitFragment"
             android:name="com.example.habittrackerapplication.ui.fragments.AddNewHabitFragment"
             android:label="fragment_add_new_habit"
-            tools:layout="@layout/fragment_add_new_habit" />
+            tools:layout="@layout/fragment_add_new_habit" >
+        </fragment>
         <fragment
             android:id="@+id/homeFragment"
             android:name="com.example.habittrackerapplication.ui.fragments.HomeFragment"
             android:label="fragment_home"
-            tools:layout="@layout/fragment_home" />
+            tools:layout="@layout/fragment_home" >
+        </fragment>
         <fragment
             android:id="@+id/calenderHistoryFragment"
             android:name="com.example.habittrackerapplication.ui.fragments.CalenderHistoryFragment"
             android:label="fragment_calender_history"
             tools:layout="@layout/fragment_calender_history" />
-    </navigation>
+
+        </navigation>
+
+    <fragment
+        android:id="@+id/habitDetailsFragment"
+        android:name="com.example.habittrackerapplication.ui.fragments.HabitDetailsFragment"
+        android:label="fragment_habit_details"
+        tools:layout="@layout/fragment_habit_details" >
+        <argument
+            android:name="habit"
+            app:argType="com.example.habittrackerapplication.models.Habit"
+            app:nullable="true" />
+    </fragment>
 
 
 </navigation>

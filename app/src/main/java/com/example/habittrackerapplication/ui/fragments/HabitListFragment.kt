@@ -1,7 +1,6 @@
 package com.example.habittrackerapplication.ui.fragments
 
 import android.app.Dialog
-import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Typeface
 import android.os.Bundle
@@ -11,13 +10,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.core.content.ContentProviderCompat.requireContext
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.example.habittrackerapplication.R
 import com.example.habittrackerapplication.common.Resource
 import com.example.habittrackerapplication.databinding.FragmentHabitListBinding
@@ -26,15 +24,14 @@ import com.example.habittrackerapplication.repositories.FirebaseAuthRepo
 import com.example.habittrackerapplication.repositories.FirebaseRealTimeDatabaseRepo
 import com.example.habittrackerapplication.ui.adapters.HabitAdapter
 import com.example.habittrackerapplication.viewmodels.HabitListFragmentViewModel
-import com.example.habittrackerapplication.viewmodels.HomeFragmentViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
-import kotlin.reflect.typeOf
+import com.kevincodes.recyclerview.ItemDecorator
+import kotlinx.coroutines.*
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.get
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -46,14 +43,15 @@ private const val ARG_PARAM2 = "param2"
  * Use the [HabitListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class HabitListFragment : Fragment() {
+class HabitListFragment : Fragment() ,HabitAdapter.ItemClickListener{
 
     lateinit var binding:FragmentHabitListBinding
 
     val dailyHabits=ArrayList<Habit>()
     val weeklyHabits=ArrayList<Habit>()
     val monthlyHabits=ArrayList<Habit>()
-
+    var curHabits=ArrayList<Habit>()
+    var userId=""
     val auhtRepo= FirebaseAuthRepo(FirebaseAuth.getInstance())
     val dbRepo= FirebaseRealTimeDatabaseRepo(FirebaseDatabase.getInstance())
     val viewModel: HabitListFragmentViewModel by lazy {
@@ -66,27 +64,27 @@ class HabitListFragment : Fragment() {
     ): View? {
         binding= FragmentHabitListBinding.inflate(layoutInflater,container,false)
 
-        //viewModel.getAllHabits(auhtRepo.getCurUser()!!.uid)
-
-        viewModel.getAllHabits("EsH7YeqlzKTAnFjOjYGK6AUlTuG2")
+        userId= FirebaseAuthRepo(FirebaseAuth.getInstance()).getCurUser()!!.uid
+        viewModel.getAllHabits(userId)
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.habits.collect {
                 when (it) {
                     is Resource.Error ->
-                        Log.d("HomeFragment", "error ${it}")
+                        Log.d("HabitListFragment", "error ${it}")
                     is Resource.Loading ->
-                        Log.d("HomeFragment", "Loading ${it}")
+                        Log.d("HabitListFragment", "Loading ${it}")
                     is Resource.Success -> {
                         setLists(it.data!!)
                         setRecycler(dailyHabits)
-                        Log.d("HomeFragment", "success ${it.data}")
+                        curHabits=dailyHabits
+                        Log.d("HabitListFragment", "success ${it.data}")
 
                     }
                 }
             }
         }
         binding.addHabitFb.setOnClickListener {
-         //navigate
+         findNavController().navigate(HabitListFragmentDirections.actionHabitListFragmentToAddNewHabitFragment())
         }
 
 
@@ -96,16 +94,19 @@ class HabitListFragment : Fragment() {
                     0 -> {
                         binding.titleTv.text = "Daily habits"
                         setRecycler(dailyHabits)
+                        curHabits=dailyHabits
 
                     }
                     1 -> {
                         binding.titleTv.text = "Weekly habits"
                         setRecycler(weeklyHabits)
+                        curHabits=weeklyHabits
 
                     }
                     2 -> {
                         binding.titleTv.text = "monthly_habits"
                         setRecycler(monthlyHabits)
+                        curHabits=monthlyHabits
 
                     }
                 }
@@ -124,6 +125,9 @@ class HabitListFragment : Fragment() {
     }
 
     private fun setLists(data: ArrayList<Habit>) {
+        dailyHabits.clear()
+        weeklyHabits.clear()
+        monthlyHabits.clear()
         for (i in 0 until data.size) {
             val type=data.get(i).type
             when (type) {
@@ -139,24 +143,14 @@ class HabitListFragment : Fragment() {
     }
 
     private fun setRecycler(list: ArrayList<Habit>) {
-        /*viewModel.setListByType(type)
-        viewModel.list.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if (it != null) {
-                list = it as ArrayList<Habit>
-                println("AAAAAAAAaa    " + list.toString())
-            }
-*/
 
         CoroutineScope(Dispatchers.Main).launch {
-            binding.habitsRv.adapter = HabitAdapter(requireContext(), list,false)
+            binding.habitsRv.adapter = HabitAdapter(requireContext(), list,false,this@HabitListFragment)
             binding.habitsRv.layoutManager = LinearLayoutManager(context)
-
-        }
-          /*  val simpleCallback = object :
+            val simpleCallback = object :
                 ItemTouchHelper.SimpleCallback(
                     0,
                     ItemTouchHelper.LEFT
-                    //or ItemTouchHelper.RIGHT
                 ) {
                 override fun onMove(
                     recyclerView: RecyclerView,
@@ -174,10 +168,6 @@ class HabitListFragment : Fragment() {
                     isCurrentlyActive: Boolean
                 ) {
 
-                    // If you want to add a background, a text, an icon
-                    //  as the user swipes, this is where to start decorating
-                    //  I will link you to a library I created for that below
-
                     super.onChildDraw(
                         c,
                         recyclerView,
@@ -191,7 +181,6 @@ class HabitListFragment : Fragment() {
                     val colorAlert = ContextCompat.getColor(requireContext(), R.color.orange)
                     val teal200 = ContextCompat.getColor(requireContext(), R.color.teal_200)
                     val defaultWhiteColor = ContextCompat.getColor(requireContext(), R.color.white)
-
 
                     ItemDecorator.Builder(c, recyclerView, viewHolder, dX, actionState).set(
                         backgroundColorFromStartToEnd = colorAlert,
@@ -215,19 +204,17 @@ class HabitListFragment : Fragment() {
                     val position = viewHolder.adapterPosition
                     when (direction) {
                         ItemTouchHelper.LEFT -> {
-                            showConfirmDialog(position)
-
+                            showConfirmDialog(list.get(position))
                         }
-
                     }
                 }
             }
             ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.habitsRv)
 
-        })*/
+        }
     }
-/*
-    private fun showConfirmDialog(position: Int) {
+
+    private fun showConfirmDialog(habit: Habit) {
         val dialog = Dialog(requireContext())
 
         dialog.setContentView(R.layout.confirm_dialog)
@@ -235,20 +222,43 @@ class HabitListFragment : Fragment() {
         dialog.show()
         dialog.findViewById<Button>(R.id.yes_btn).setOnClickListener {
             dialog.dismiss()
-            FirebaseDatabase.getInstance()
-                .reference.child("accounts")
-                .child(FirebaseAuth.getInstance().currentUser!!.uid)
-                .child("Habits")
-                .child(list.get(position).id!!).removeValue()
-                .addOnSuccessListener {
-                    viewModel.deleteHabit(list.get(position))
-                }
 
+            viewModel.deleteHabit(userId,habit)
+
+            CoroutineScope(Dispatchers.IO).launch {
+                viewModel.deleted.collect {
+                    when (it) {
+                        is Resource.Error -> {
+                            MainScope().launch {
+                                Toast.makeText(requireContext(),"error occurred please try again",Toast.LENGTH_SHORT).show()
+                            }
+                            Log.d("CalenderHistoryFragment", "error ${it}")
+                        }
+                        is Resource.Loading ->
+                            Log.d("CalenderHistoryFragment", "Loading ${it}")
+                        is Resource.Success -> {
+                            MainScope().launch {
+                                Toast.makeText(requireContext(),"deleted",Toast.LENGTH_SHORT).show()
+                            }
+                            Log.d("CalenderHistoryFragment", "success ${it.data}")
+
+                        }
+                    }
+                }
+            }
         }
 
         dialog.findViewById<Button>(R.id.no_btn).setOnClickListener {
             dialog.dismiss()
         }
     }
-*/
+
+    override fun onItemClick(position: Int) {
+        findNavController().navigate( HabitListFragmentDirections.actionHabitListFragmentToHabitDetailsFragment(curHabits.get(position)))
+    }
+
+    override fun onRadioButtonClick(position: Int) {
+
+    }
+
 }

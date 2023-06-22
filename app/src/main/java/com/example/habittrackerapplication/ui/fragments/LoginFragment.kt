@@ -1,7 +1,6 @@
 package com.example.habittrackerapplication.ui.fragments
 
 import android.content.Intent
-import android.os.Binder
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
@@ -11,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.habittrackerapplication.R
 import com.example.habittrackerapplication.common.CLINT_SERVER_ID
 import com.example.habittrackerapplication.common.Resource
@@ -104,6 +104,7 @@ class LoginFragment : Fragment() {
                         Log.d("LoginFragment", "sss ${it}")
                     is Resource.Success -> {
                         launch(Dispatchers.Main) {
+                            findNavController().navigate(LoginFragmentDirections.actionLoginToCoreNav())
                             Toast.makeText(requireContext(), "DONE", Toast.LENGTH_SHORT).show()
                         }
                         Log.d("LoginFragment", "success ${it.data}")

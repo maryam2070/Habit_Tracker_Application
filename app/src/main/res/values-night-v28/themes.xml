@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="calendar" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="android:outlineAmbientShadowColor">@color/white</item>
+        <item name="android:dateTextAppearance">@color/white</item>
+        <item name="android:weekDayTextAppearance">@color/white</item>
+        <item name="subheaderTextAppearance">@color/white</item>
+        <item name="mcv_leftArrowMask">@color/white</item>
+        <item name="mcv_rightArrowMask">@color/white</item>
+    </style>
+</resources>

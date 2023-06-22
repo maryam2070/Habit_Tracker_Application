@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.habittrackerapplication.common.Resource
 import com.example.habittrackerapplication.models.Habit
 import com.example.habittrackerapplication.repositories.FirebaseRealTimeDatabaseRepo
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -17,6 +18,10 @@ class HabitListFragmentViewModel (private val databaseRepo: FirebaseRealTimeData
     private val _habits = MutableStateFlow<Resource<ArrayList<Habit>>>(Resource.Loading())
     val habits: MutableStateFlow<Resource<ArrayList<Habit>>>
         get() = _habits
+
+    private val _deleted = MutableStateFlow<Resource<Boolean>>(Resource.Loading())
+    val deleted: MutableStateFlow<Resource<Boolean>>
+        get() = _deleted
 
 
     fun getAllHabits(userId:String) = viewModelScope.launch {
@@ -29,6 +34,25 @@ class HabitListFragmentViewModel (private val databaseRepo: FirebaseRealTimeData
                     Log.d("HabitListFragmentViewModel", "Loading ${it}")
                 is Resource.Success ->{
                     _habits.value=it
+                    Log.d("HabitListFragmentViewModel", "success ${it.data}")
+
+                }
+            }
+        }
+    }
+
+    fun deleteHabit(userId:String,habit: Habit) = viewModelScope.launch {
+        databaseRepo.deleteHabit(userId, habit).collect{
+            when(it)
+            {
+                is Resource.Error -> {
+                    _deleted.value = it
+                    Log.d("HabitListFragmentViewModel", "error ${it}")
+                }
+                is Resource.Loading ->
+                    Log.d("HabitListFragmentViewModel", "Loading ${it}")
+                is Resource.Success ->{
+                    _deleted.value=it
                     Log.d("HabitListFragmentViewModel", "success ${it.data}")
 
                 }

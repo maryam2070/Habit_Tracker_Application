@@ -9,23 +9,22 @@ import android.view.ViewGroup
 import android.widget.CalendarView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.habittrackerapplication.R
 import com.example.habittrackerapplication.common.Resource
 import com.example.habittrackerapplication.common.getDayName
 import com.example.habittrackerapplication.common.getFormattedDate
 import com.example.habittrackerapplication.common.getNumberOfDayInMonth
 import com.example.habittrackerapplication.databinding.FragmentCalenderHistoryBinding
 import com.example.habittrackerapplication.models.Habit
+import com.example.habittrackerapplication.repositories.FirebaseAuthRepo
 import com.example.habittrackerapplication.repositories.FirebaseRealTimeDatabaseRepo
 import com.example.habittrackerapplication.ui.adapters.HabitAdapter
 import com.example.habittrackerapplication.viewmodels.CalenderHistoryFragmentViewModel
-import com.example.habittrackerapplication.viewmodels.HomeFragmentViewModel
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import java.time.Month
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -57,17 +56,19 @@ class CalenderHistoryFragment : Fragment() {
     ): View? {
         binding= FragmentCalenderHistoryBinding.inflate(layoutInflater,container,false)
 
-        viewModel.getAllHabits("EsH7YeqlzKTAnFjOjYGK6AUlTuG2")
-        viewModel.getTimeOfRegistration("EsH7YeqlzKTAnFjOjYGK6AUlTuG2")
+
+        val userId= FirebaseAuthRepo(FirebaseAuth.getInstance()).getCurUser()!!.uid
+        viewModel.getAllHabits(userId)
+        viewModel.getTimeOfRegistration(userId)
 
 
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.habits.collect {
                 when (it) {
                     is Resource.Error ->
-                        Log.d("HomeFragment", "error ${it}")
+                        Log.d("CalenderHistoryFragment", "error ${it}")
                     is Resource.Loading ->
-                        Log.d("HomeFragment", "Loading ${it}")
+                        Log.d("CalenderHistoryFragment", "Loading ${it}")
                     is Resource.Success -> {
                         cancel()
                         habits=it.data!!
@@ -76,7 +77,7 @@ class CalenderHistoryFragment : Fragment() {
                             binding.titleTv.text=getDateString(calendar[Calendar.YEAR],calendar[Calendar.MONTH],calendar[Calendar.DAY_OF_MONTH])
                         }
                         updateUi(it.data!!, getFormattedDate(calendar),getNumberOfDayInMonth(calendar),getDayName(calendar),calendar.timeInMillis)
-                        Log.d("HomeFragment", "success ${it.data}")
+                        Log.d("CalenderHistoryFragment", "success ${it.data}")
                     }
                 }
             }
@@ -86,14 +87,14 @@ class CalenderHistoryFragment : Fragment() {
             viewModel.timeOfRegistration.collect {
                 when (it) {
                     is Resource.Error ->
-                        Log.d("HomeFragment", "error ${it}")
+                        Log.d("CalenderHistoryFragment", "error ${it}")
                     is Resource.Loading ->
-                        Log.d("HomeFragment", "Loading ${it}")
+                        Log.d("CalenderHistoryFragment", "Loading ${it}")
                     is Resource.Success -> {
                         CoroutineScope(Dispatchers.Main).launch {
                             binding.calendarCv.minDate=it.data.toString().toLong()
                         }
-                        Log.d("HomeFragment", "success ${it.data}")
+                        Log.d("CalenderHistoryFragment", "success ${it.data}")
                     }
                 }
             }
@@ -140,7 +141,7 @@ class CalenderHistoryFragment : Fragment() {
                 binding.progressTv.text =
                     "${(completed * 100 / list.size * 100) / 100}% from your\n today habits done"
             }
-            binding.habitsRv.adapter = HabitAdapter(requireContext(), todayList)
+            binding.habitsRv.adapter = HabitAdapter(requireContext(), todayList, itemClickListener = null)
             binding.habitsRv.layoutManager = LinearLayoutManager(context)
 
         }

@@ -84,7 +84,7 @@ class SignUpFragment : Fragment() {
                     is Resource.Success -> {
                         launch(Dispatchers.Main) {
                             Toast.makeText(requireContext(), "DONE", Toast.LENGTH_SHORT).show()
-                            findNavController().navigate(R.id.action_signUpFragment_to_homeFragment2)
+                            findNavController().navigate(SignUpFragmentDirections.actionSignUpToCoreNav())
                         }
                         Log.d("SignUpFragment", "success ${it.data}")
                     }
@@ -156,8 +156,9 @@ class SignUpFragment : Fragment() {
             binding.firstNameTil.setError(null)
             binding.secondNameTil.setError(null)
 
-            validateEmail(binding.emailTil.editText!!.text.toString(),binding.passwordTil.editText!!.text.toString())
-            //validateEmail()
+
+            validateEmail(binding.emailTil.editText!!.text.toString(),binding.passwordTil.editText!!.text.toString(),
+                binding.firstNameTil.editText!!.text.toString()+" "+binding.secondNameTil.editText!!.text.toString())
         }
     }
 
@@ -178,6 +179,8 @@ class SignUpFragment : Fragment() {
                                     "this Email is already registered",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                //findNavController().popBackStack()
+                                findNavController().navigate(SignUpFragmentDirections.actionSignUpToCoreNav())
                             }
                         }else
                             viewModel.signUpWithGoogle(account)
@@ -187,7 +190,7 @@ class SignUpFragment : Fragment() {
             }
         }
     }
-    private fun validateEmail(email: String, pass: String) {
+    private fun validateEmail(email: String, pass: String,name:String) {
         viewModel.getAllEmails()
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.emails.collect {
@@ -204,11 +207,14 @@ class SignUpFragment : Fragment() {
                                     "this Email is already registered",
                                     Toast.LENGTH_SHORT
                                 ).show()
+
+                                findNavController().navigate(SignUpFragmentDirections.actionSignUpToCoreNav())
                             }
                         }else
                             viewModel.registerUser(
                                 email,
-                                pass
+                                pass,
+                                name
                             )
                         Log.d("SignUpFragment", "success ${it.data}")
                     }
