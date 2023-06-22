@@ -1,55 +1,49 @@
 <h1>Features</h1>
 <h2>Habits</h2>
-<ul>
-<li>user can add new habit(daily with exception days, weekly, monthly) </li>
-<li>user can delete habit </li>
-<li>user can see all habits by it's type </li>
-<li>user can track habit progress by completed days </li>
-<li>user can track his progress by days </li>
-<li>user can mark habit as completed for the current day </li>
-<li>user can track current day progress and it's habits </li>
-</ul>
+	<ul>
+		<li>user can add new habit(daily with exception days, weekly, monthly) </li>
+		<li>user can delete habit </li>
+		<li>user can see all habits by it's type </li>
+		<li>user can track habit progress by completed days </li>
+		<li>user can track his progress by days </li>
+		<li>user can mark habit as completed for the current day </li>
+		<li>user can track current day progress and it's habits </li>
+	</ul>
 <h2>Authuntication</h2>
-<ul>
-<li>user can create new account with google account </li>
-<li>user can create new account with email & password</li>
-<li>user can login with email & password and google account</li>
-<li>user can reset his password </li>
-<li>user can update his email </li>
-<li>user can update his photo </li>
-<li>user can logout </li>
-</ul>
-<h2>Screenshots</h2>
-<img src="https://github.com/maryam2070/Habit_Tracker_Application/assets/75796502/6bbc0cdd-8f38-421b-9d15-4f70f70cb580">
-<img src="https://github.com/maryam2070/Habit_Tracker_Application/assets/75796502/8a0f2f8e-c7fc-4485-b588-c6c6aaea08a1">
-<img src="https://github.com/maryam2070/Habit_Tracker_Application/assets/75796502/7407254a-f7b1-42af-9013-85639f42206c">
-<img src="https://github.com/maryam2070/Habit_Tracker_Application/assets/75796502/99f721da-d9b0-4ba1-b14e-b48cf5c09b5b">
-
-</h2>Technologies & Open-source libraries</h2>
-<ul>
-<li>Kotlin mainly, Coroutines together with Flow<li>
-<li>Firebase mainly used in this project
 	<ul>
-		<li>Authentication</li>
-		<li>RealTimeDatabase</li>
+		<li>user can create new account with google account </li>
+		<li>user can create new account with email & password</li>
+		<li>user can login with email & password and google account</li>
+		<li>user can reset his password </li>
+		<li>user can update his email </li>
+		<li>user can update his photo </li>
+		<li>user can logout </li>
 	</ul>
-<li>
-<li>SDP to support different screen sizes</li>
-
-<li>Architecture
-<ul>
-	<li>MVVM (model view view-model) reposittory pattern</li>
-</ul>
-<li>
-<li>Material design components<li>
-<li>JetPack:</li>
+<h2>Technologies & Open-source libraries</h2>
 	<ul>
-	<li>Lifecycle</li>
-	<li>ViewModel</li>
-	<li>ViewBinding</li>
-	<li>Navigation Component</li>
-	<li>Swipe-to-deletefor habit delete</li>
-	<li>Glide</li>
-	<li>Dexter to ask for permissions</li>
+		<li>Kotlin mainly, Coroutines together with Flow</li>
+		<li>Firebase mainly used in this project
+			<ul>
+				<li>Authentication</li>
+				<li>RealTimeDatabase</li>
+			</ul>
+		</li>
+		<li>SDP to support different screen sizes</li>
+		<li>Architecture
+			<ul>
+				<li>MVVM (model view view-model) reposittory pattern</li>
+			</ul>
+		</li>
+		<li>Material design components</li>
+		<li>JetPack:
+			<ul>
+				<li>Lifecycle</li>
+				<li>ViewModel</li>
+				<li>ViewBinding</li>
+				<li>Navigation Component</li>
+				<li>Swipe-to-deletefor habit delete</li>
+				<li>Glide</li>
+				<li>Dexter to ask for permissions</li>
+			</ul>
+		</li>
 	</ul>
-</ul>
