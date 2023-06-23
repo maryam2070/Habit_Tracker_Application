@@ -48,7 +48,7 @@
 		</li>
 	</ul>
 <h2>Screenshots</h2>
-
+<h3>light and dark mode available and being set according to phone default mode</h3>
 
 ![1](https://github.com/maryam2070/Habit_Tracker_Application/assets/75796502/e9ed9976-1fe8-4480-8bd8-663b8fe942e6)
 ![1 - Copy - Copy (2)](https://github.com/maryam2070/Habit_Tracker_Application/assets/75796502/1d10dea5-e5b8-4100-8e51-a3f4cd7dd067)
